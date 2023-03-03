@@ -21,14 +21,17 @@ import androidx.navigation.ui.navigateUp
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
 
+@AndroidEntryPoint
 class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
-    val postViewModel by viewModels<PostViewModel>()
+    val postViewModel: PostViewModel by viewModels()
+    val authViewModel: AuthViewModel by viewModels()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var toolbar: Toolbar
     private var previousMenuProvider: MenuProvider? = null
@@ -83,7 +86,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
     }
 
     private fun addMenuInMenuProvider() {
-        val authViewModel by viewModels<AuthViewModel>()
         authViewModel.data.observe(this) {
             previousMenuProvider?.let(toolbar::removeMenuProvider)
             toolbar.addMenuProvider(object : MenuProvider {
